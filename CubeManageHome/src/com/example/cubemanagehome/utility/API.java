@@ -17,10 +17,14 @@ public class API {
 	public static final String API_USER = "/api/user/";
 	public static final String API_PLUGIN = "/api/plugin/";
 	public static final String API_VENDOR = "/api/vendor/";
+	public static final String API_STATUS = "/status";
+	
 
 	public static Object Request(String api, String uri, String request)
 			throws IOException, JSONException {
+		
 		URL requestUri = new URL(uri + api + ((request != null) ? request : ""));
+		Log.d("HELLOACT", uri + api + ((request != null) ? request : ""));
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				requestUri.openStream()));
 		String line = "";
@@ -37,4 +41,10 @@ public class API {
 		}
 		return o;
 	}
+	
+	public static Object Request(String api, String uri)
+			throws IOException, JSONException {
+		return API.Request(api,uri,null);
+	}
+
 }
