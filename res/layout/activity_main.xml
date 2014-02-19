@@ -1,92 +1,158 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".Main" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp"
-        android:text="Login"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:textColor="#33b5e5"
-        android:text="Creators: Paul Rangger\n Thomas Reichart"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="28dp"
+        android:layout_marginTop="38dp"
+        android:fillViewport="true" >
+
+        <TableLayout
+            android:id="@+id/lout_main_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableLayout>
+    </ScrollView>
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="options"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/imageView1"
+        android:clickable="true"
+        android:onClick="options"
+        android:text="Cube"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/rotorange" />
+
+    <ImageView
+        android:id="@+id/optionsimg"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:onClick="options"
+        android:src="@drawable/zahnrad" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <TableLayout
+        android:id="@+id/settings"
+        android:background="?android:attr/windowBackground"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp"
-        android:text="Username"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/scrollView1"
+        android:visibility="gone" >
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_below="@+id/Username"
-        android:layout_marginTop="29dp"
-        android:text="Password"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TableRow
+            android:id="@+id/IhrProf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp" >
 
-    <EditText
-        android:id="@+id/Password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:inputType="textPassword" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ihr Profil"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
+        <TableRow
+            android:id="@+id/limiter1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:background="#555555" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Benverw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Benutzerverwaltung"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/limiter2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:background="#555555" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Lgout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:clickable="true"
+            android:onClick="logout"
+            android:paddingBottom="75dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/navi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Navigation"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
         
+         <TableRow
+            android:id="@+id/limiter3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:background="#555555" >
+        </TableRow>
 
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView3"
-        android:layout_below="@+id/Password"
-        android:layout_marginTop="20dp"
-        android:onClick="submitclick"
-        android:text="Submit" />
-
-    <EditText
-        android:id="@+id/Username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Password"
-        android:layout_below="@+id/textView2"
-        android:ems="10"
-        android:inputType="textPersonName">
-    
-    <requestFocus />
-    </EditText>
+    </TableLayout>
 
 </RelativeLayout>
