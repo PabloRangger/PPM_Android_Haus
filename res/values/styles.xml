@@ -16,6 +16,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    <color name="rotorange">#FF6600</color>
+    <color name="rotorange">#F52200</color>
+    <color name="darkorange">#CC5000</color>
 
 </resources>

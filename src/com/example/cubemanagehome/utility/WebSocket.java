@@ -21,11 +21,11 @@ public class WebSocket {
 	public static final String WSS_REQUEST_ACTIVE = "C!G:ACTIVE";
 	public static final String WSS_REQUEST_VALUE = "C!G:VALUE";
 	// RESPONSES
-	public static final String WSS_RESPONSE_ACTIVE = "W!E:ADD";
+	public static final String WSS_RESPONSE_ACTIVE = "W!R:ADD";
 	public static final String WSS_RESPONSE_NEW = "W!R:NEW";
 	public static final String WSS_RESPONSE_COUNT = "W!R:COUNT";
 	public static final String WSS_RESPONSE_VALUE = "W!R:VALUE";
-	public static final String WSS_RESPONSE_REMOVE = "W!E:REMOVE";
+	public static final String WSS_RESPONSE_REMOVE = "W!R:REMOVE";
 	public static final String WSS_SET_TOKEN = "C!S:TOKEN";
 	public static final String WSS_RESPONSE_UPDATE = "W!R:UPDATE";
 	
@@ -87,7 +87,7 @@ public class WebSocket {
 			message.put("data", obj);
 		}
 		JSONObject obj2 = new JSONObject(message);
-
+		Log.d("communication", obj2.toString());
 		this.mConnection.sendTextMessage(obj2.toString());
 
 	}

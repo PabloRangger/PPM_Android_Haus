@@ -12,6 +12,10 @@ import java.io.OutputStreamWriter;
 
 
 
+
+
+
+
 import com.example.cubemanagehome.utility.API;
 import com.example.cubemanagehome.utility.Credentials;
 import com.example.cubemanagehome.utility.PathManager;
@@ -27,7 +31,12 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 
 public class Hello_activity extends Activity {
 
@@ -157,6 +166,11 @@ public class Hello_activity extends Activity {
 							public void run() {
 								alert_online.show();
 
+								RelativeLayout rl = (RelativeLayout) findViewById(R.id.firstsett_lout);
+								Animation pushrightout = AnimationUtils.loadAnimation(getApplicationContext(),
+										R.anim.push_left_out_true);
+
+								rl.startAnimation(pushrightout);
 								setContentView(R.layout.activity_login);
 							}
 						});
@@ -180,7 +194,13 @@ public class Hello_activity extends Activity {
 	}
 
 	public void weiter(View view) {
+		RelativeLayout rl = (RelativeLayout) findViewById(R.id.init_conf);
+		Animation pushrightout = AnimationUtils.loadAnimation(this,
+				R.anim.push_right_out);
+
+		rl.startAnimation(pushrightout);
 		setContentView(R.layout.activity_first_settings);
+		
 	}
 
 	public void submitclick(View view) {
@@ -228,6 +248,11 @@ public class Hello_activity extends Activity {
 	}
 
 	public void changeip(View view) {
+		RelativeLayout rl = (RelativeLayout) findViewById(R.id.log_lout);
+		Animation pushrightout = AnimationUtils.loadAnimation(this,
+				R.anim.push_right_out);
+
+		rl.startAnimation(pushrightout);
 		setContentView(R.layout.activity_first_settings);
 	}
 

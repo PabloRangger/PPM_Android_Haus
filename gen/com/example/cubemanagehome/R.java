@@ -13,12 +13,15 @@ public final class R {
         public static final int push_down_out=0x7f040001;
         public static final int push_left_in=0x7f040002;
         public static final int push_left_out=0x7f040003;
-        public static final int push_right_in=0x7f040004;
-        public static final int push_right_out=0x7f040005;
+        public static final int push_left_out_true=0x7f040004;
+        public static final int push_right_in=0x7f040005;
+        public static final int push_right_in_true=0x7f040006;
+        public static final int push_right_out=0x7f040007;
     }
     public static final class attr {
     }
     public static final class color {
+        public static final int darkorange=0x7f080001;
         public static final int rotorange=0x7f080000;
     }
     public static final class dimen {
@@ -32,44 +35,48 @@ public final class R {
         public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int kreis_orange=0x7f020001;
-        public static final int kreis_schwarz=0x7f020002;
-        public static final int logo=0x7f020003;
-        public static final int zahnrad=0x7f020004;
+        public static final int backgr=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int kreis_orange=0x7f020002;
+        public static final int kreis_schwarz=0x7f020003;
+        public static final int logo=0x7f020004;
+        public static final int zahnrad=0x7f020005;
     }
     public static final class id {
-        public static final int Benverw=0x7f0a0013;
-        public static final int IhrProf=0x7f0a0011;
-        public static final int Lgout=0x7f0a0015;
-        public static final int Password=0x7f0a0009;
-        public static final int Username=0x7f0a0008;
-        public static final int Weiter=0x7f0a001b;
-        public static final int action_settings=0x7f0a001e;
-        public static final int button1=0x7f0a0002;
+        public static final int Benverw=0x7f0a0015;
+        public static final int IhrProf=0x7f0a0013;
+        public static final int Lgout=0x7f0a0017;
+        public static final int Password=0x7f0a000a;
+        public static final int Username=0x7f0a0009;
+        public static final int Weiter=0x7f0a001e;
+        public static final int action_settings=0x7f0a0021;
+        public static final int button1=0x7f0a0006;
         public static final int changeip=0x7f0a000b;
-        public static final int einfuehrung=0x7f0a001c;
-        public static final int imageView1=0x7f0a0007;
-        public static final int limiter1=0x7f0a0012;
-        public static final int limiter2=0x7f0a0014;
-        public static final int limiter3=0x7f0a0018;
-        public static final int lout_main=0x7f0a000c;
-        public static final int lout_main_table=0x7f0a000e;
-        public static final int navi=0x7f0a0016;
-        public static final int navigation=0x7f0a0017;
-        public static final int optionsimg=0x7f0a000f;
-        public static final int scrollView1=0x7f0a000d;
+        public static final int einfuehrung=0x7f0a001f;
+        public static final int firstsett_lout=0x7f0a0000;
+        public static final int imageView1=0x7f0a0010;
+        public static final int init_conf=0x7f0a001d;
+        public static final int limiter1=0x7f0a0014;
+        public static final int limiter2=0x7f0a0016;
+        public static final int limiter3=0x7f0a001a;
+        public static final int log_lout=0x7f0a0007;
+        public static final int lout_main=0x7f0a000d;
+        public static final int lout_main_table=0x7f0a000f;
+        public static final int navi=0x7f0a0018;
+        public static final int navigation=0x7f0a0019;
+        public static final int optionsimg=0x7f0a0011;
+        public static final int scrollView1=0x7f0a000e;
         public static final int serveradresse=0x7f0a0004;
         public static final int servername=0x7f0a0005;
-        public static final int settings=0x7f0a0010;
-        public static final int side_navigation_menu_item1=0x7f0a001d;
-        public static final int submit=0x7f0a000a;
-        public static final int tableRow1=0x7f0a0019;
-        public static final int tableRow2=0x7f0a001a;
-        public static final int textView1=0x7f0a0000;
-        public static final int textView2=0x7f0a0001;
+        public static final int settings=0x7f0a0012;
+        public static final int side_navigation_menu_item1=0x7f0a0020;
+        public static final int submit=0x7f0a000c;
+        public static final int tableRow1=0x7f0a001b;
+        public static final int tableRow2=0x7f0a001c;
+        public static final int textView1=0x7f0a0001;
+        public static final int textView2=0x7f0a0002;
         public static final int textView3=0x7f0a0003;
-        public static final int textView4=0x7f0a0006;
+        public static final int textView4=0x7f0a0008;
     }
     public static final class layout {
         public static final int activity_first_settings=0x7f030000;

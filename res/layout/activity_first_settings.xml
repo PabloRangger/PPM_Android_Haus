@@ -6,7 +6,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".FirstSettings" >
+    tools:context=".FirstSettings" 
+    android:background="@drawable/backgr"
+    android:id="@+id/firstsett_lout">
 
     <TextView
         android:id="@+id/textView1"
@@ -16,7 +18,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:text="Bitte geben Sie zuerst die wichtigsten Daten ein"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -27,16 +30,6 @@
         android:layout_marginTop="52dp"
         android:text="Servername:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="63dp"
-        android:text="Fertigstellen" 
-        android:onClick="finish"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -68,5 +61,18 @@
 
         <requestFocus />
     </EditText>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="47dp"
+        android:background="@color/rotorange"
+        android:onClick="finish"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Fertigstellen" />
 
 </RelativeLayout>
