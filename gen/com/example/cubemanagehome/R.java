@@ -36,71 +36,92 @@ public final class R {
     }
     public static final class drawable {
         public static final int backgr=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int kreis_orange=0x7f020002;
-        public static final int kreis_schwarz=0x7f020003;
-        public static final int logo=0x7f020004;
-        public static final int zahnrad=0x7f020005;
+        public static final int bleier=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int kreis_orange=0x7f020003;
+        public static final int kreis_schwarz=0x7f020004;
+        public static final int logo=0x7f020005;
+        public static final int zahnrad=0x7f020006;
     }
     public static final class id {
-        public static final int Benverw=0x7f0a0015;
-        public static final int IhrProf=0x7f0a0013;
-        public static final int Lgout=0x7f0a0017;
-        public static final int Password=0x7f0a000a;
-        public static final int Username=0x7f0a0009;
-        public static final int Weiter=0x7f0a001e;
-        public static final int action_settings=0x7f0a0021;
-        public static final int button1=0x7f0a0006;
-        public static final int changeip=0x7f0a000b;
-        public static final int einfuehrung=0x7f0a001f;
-        public static final int firstsett_lout=0x7f0a0000;
-        public static final int imageView1=0x7f0a0010;
-        public static final int init_conf=0x7f0a001d;
-        public static final int limiter1=0x7f0a0014;
-        public static final int limiter2=0x7f0a0016;
-        public static final int limiter3=0x7f0a001a;
-        public static final int log_lout=0x7f0a0007;
-        public static final int lout_main=0x7f0a000d;
-        public static final int lout_main_table=0x7f0a000f;
-        public static final int navi=0x7f0a0018;
-        public static final int navigation=0x7f0a0019;
-        public static final int optionsimg=0x7f0a0011;
-        public static final int scrollView1=0x7f0a000e;
-        public static final int serveradresse=0x7f0a0004;
-        public static final int servername=0x7f0a0005;
-        public static final int settings=0x7f0a0012;
-        public static final int side_navigation_menu_item1=0x7f0a0020;
-        public static final int submit=0x7f0a000c;
-        public static final int tableRow1=0x7f0a001b;
-        public static final int tableRow2=0x7f0a001c;
-        public static final int textView1=0x7f0a0001;
-        public static final int textView2=0x7f0a0002;
-        public static final int textView3=0x7f0a0003;
-        public static final int textView4=0x7f0a0008;
+        public static final int Benutzername=0x7f0a0024;
+        public static final int Benverw=0x7f0a001b;
+        public static final int Edit=0x7f0a0027;
+        public static final int Email=0x7f0a0026;
+        public static final int FirstLastName=0x7f0a0025;
+        public static final int Firstname=0x7f0a0006;
+        public static final int IhrProf=0x7f0a0019;
+        public static final int Lastname=0x7f0a0008;
+        public static final int Lgout=0x7f0a001d;
+        public static final int Password=0x7f0a0010;
+        public static final int Save=0x7f0a0001;
+        public static final int Username=0x7f0a0004;
+        public static final int Weiter=0x7f0a002b;
+        public static final int action_settings=0x7f0a002e;
+        public static final int button1=0x7f0a000c;
+        public static final int changeAvatar=0x7f0a0000;
+        public static final int changePassword=0x7f0a0002;
+        public static final int changeip=0x7f0a0011;
+        public static final int einfuehrung=0x7f0a002c;
+        public static final int firstsett_lout=0x7f0a0009;
+        public static final int imageView1=0x7f0a0016;
+        public static final int init_conf=0x7f0a002a;
+        public static final int limiter1=0x7f0a001a;
+        public static final int limiter2=0x7f0a001c;
+        public static final int limiter3=0x7f0a0020;
+        public static final int log_lout=0x7f0a000e;
+        public static final int lout_main=0x7f0a0013;
+        public static final int lout_main_table=0x7f0a0015;
+        public static final int navi=0x7f0a001e;
+        public static final int navigation=0x7f0a001f;
+        public static final int optionsimg=0x7f0a0017;
+        public static final int progressBar1=0x7f0a000d;
+        public static final int scrollView1=0x7f0a0014;
+        public static final int serveradresse=0x7f0a000a;
+        public static final int servername=0x7f0a000b;
+        public static final int settings=0x7f0a0018;
+        public static final int side_navigation_menu_item1=0x7f0a002d;
+        public static final int submit=0x7f0a0012;
+        public static final int tableRow1=0x7f0a0028;
+        public static final int tableRow2=0x7f0a0029;
+        public static final int textView1=0x7f0a0003;
+        public static final int textView2=0x7f0a0005;
+        public static final int textView3=0x7f0a0007;
+        public static final int textView4=0x7f0a000f;
+        public static final int yologressbar=0x7f0a0021;
+        public static final int yprof_img=0x7f0a0023;
+        public static final int yprof_lout=0x7f0a0022;
     }
     public static final class layout {
-        public static final int activity_first_settings=0x7f030000;
-        public static final int activity_hello_activity=0x7f030001;
-        public static final int activity_login=0x7f030002;
-        public static final int activity_main=0x7f030003;
-        public static final int activity_test=0x7f030004;
-        public static final int fragment_user=0x7f030005;
-        public static final int initial_configuration_dialog=0x7f030006;
-        public static final int side_navigation_menu=0x7f030007;
+        public static final int activity_edit_user=0x7f030000;
+        public static final int activity_first_settings=0x7f030001;
+        public static final int activity_hello_activity=0x7f030002;
+        public static final int activity_login=0x7f030003;
+        public static final int activity_main=0x7f030004;
+        public static final int activity_your_profile=0x7f030005;
+        public static final int fragment_user=0x7f030006;
+        public static final int initial_configuration_dialog=0x7f030007;
+        public static final int side_navigation_menu=0x7f030008;
     }
     public static final class menu {
-        public static final int first_settings=0x7f090000;
-        public static final int hello_activity=0x7f090001;
-        public static final int main=0x7f090002;
-        public static final int test=0x7f090003;
+        public static final int avatar_setting=0x7f090000;
+        public static final int edit_user=0x7f090001;
+        public static final int first_settings=0x7f090002;
+        public static final int hello_activity=0x7f090003;
+        public static final int main=0x7f090004;
+        public static final int test=0x7f090005;
+        public static final int your_profile=0x7f090006;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060002;
+        public static final int title_activity_avatar_setting=0x7f060007;
+        public static final int title_activity_edit_user=0x7f060008;
         public static final int title_activity_first_settings=0x7f060004;
         public static final int title_activity_hello_activity=0x7f060003;
         public static final int title_activity_test=0x7f060005;
+        public static final int title_activity_your_profile=0x7f060006;
     }
     public static final class style {
         /** 

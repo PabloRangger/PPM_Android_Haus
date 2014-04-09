@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/backgr"
+    tools:context=".EditUser" >
+
+	<TextView
+	    android:id="@+id/changeAvatar"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/Save"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="17dp"
+	    android:clickable="true"
+	    android:onClick="changeAvatar"
+	    android:text="change Avatar"
+	    android:textColor="#FF3300" />
+
+	<TextView
+	    android:id="@+id/changePassword"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/changeAvatar"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="18dp"
+	    android:clickable="true"
+	    android:onClick="changePassword"
+	    android:text="change password"
+	    android:textColor="#FF3300" />
+
+	<Button
+	    android:id="@+id/Save"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="22dp"
+	    android:clickable="true"
+	    android:onClick="Save"
+	    android:text="Save" />
+
+	<TextView
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/Username"
+	    android:layout_alignLeft="@+id/textView2"
+	    android:text="Username:"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+	    android:id="@+id/textView2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/Firstname"
+	    android:layout_centerHorizontal="true"
+	    android:text="Firstname:"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+	    android:id="@+id/textView3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/Lastname"
+	    android:layout_centerHorizontal="true"
+	    android:text="Lastname:"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<EditText
+	    android:id="@+id/Lastname"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/Firstname"
+	    android:layout_centerVertical="true"
+	    android:ems="10"
+	    android:hint="Lastname" />
+
+	<EditText
+	    android:id="@+id/Firstname"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/textView3"
+	    android:layout_alignLeft="@+id/Username"
+	    android:layout_marginBottom="19dp"
+	    android:ems="10"
+	    android:hint="Firstname" />
+
+	<EditText
+	    android:id="@+id/Username"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/textView2"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="22dp"
+	    android:ems="10"
+	    android:hint="Username" />
+
+</RelativeLayout>

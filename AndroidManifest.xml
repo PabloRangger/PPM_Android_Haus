@@ -16,10 +16,15 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:debuggable="true"
+        android:vmSafeMode="true"       
+        android:allowClearUserData="true"
+        android:hardwareAccelerated="true" >
         <activity
             android:name="com.example.cubemanagehome.Hello_activity"
-            android:label="@string/title_activity_hello_activity" >
+            android:label="@string/title_activity_hello_activity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,15 +33,26 @@
         </activity>
         <activity
             android:name="com.example.cubemanagehome.Main"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.cubemanagehome.FirstSettings"
-            android:label="@string/title_activity_first_settings" >
+            android:label="@string/title_activity_first_settings"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.cubemanagehome.Test"
-            android:label="@string/title_activity_test" >
+            android:name="com.example.cubemanagehome.YourProfile"
+            android:label="@string/title_activity_your_profile"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.example.cubemanagehome.AvatarSetting"
+            android:label="@string/title_activity_avatar_setting" >
+        </activity>
+        <activity
+            android:name="com.example.cubemanagehome.EditUser"
+            android:label="@string/title_activity_edit_user" >
         </activity>
     </application>
 

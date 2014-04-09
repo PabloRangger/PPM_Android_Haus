@@ -28,7 +28,9 @@ public class WebSocket {
 	public static final String WSS_RESPONSE_REMOVE = "W!R:REMOVE";
 	public static final String WSS_SET_TOKEN = "C!S:TOKEN";
 	public static final String WSS_RESPONSE_UPDATE = "W!R:UPDATE";
-	
+	//EXEC
+	public static final String WSS_EXECUTE_CLIENT_COMMAND = "C!E:COMMAND";
+	//TOKEN
 	public static final String WSS_RESPONSE_TOKEN_ACCEPT = "W!R:TKACC";
 	public static final String WSS_RESPONSE_TOKEN_REFUSE = "W!R:TKREF";
 	// ERROR

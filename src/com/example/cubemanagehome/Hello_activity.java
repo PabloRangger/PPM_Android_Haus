@@ -16,6 +16,9 @@ import java.io.OutputStreamWriter;
 
 
 
+
+
+
 import com.example.cubemanagehome.utility.API;
 import com.example.cubemanagehome.utility.Credentials;
 import com.example.cubemanagehome.utility.PathManager;
@@ -24,6 +27,7 @@ import com.example.cubemanagehome.utility.User;
 import com.example.cubemanagehome.utility.XML;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +35,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -44,7 +49,9 @@ public class Hello_activity extends Activity {
 	API api = API.getApiInstance();
 
 	protected void onCreate(Bundle savedInstanceState) {
-
+		setContentView(R.layout.activity_hello_activity);
+		ActionBar actionBar = this.getActionBar();
+		actionBar.hide();
 		final AlertDialog.Builder alert_sessionexpired = new AlertDialog.Builder(this)
 		.setTitle("Session expired")
 		.setMessage(
@@ -54,8 +61,7 @@ public class Hello_activity extends Activity {
 		String serverip = new String();
 		
 
-		ActionBar actionBar = this.getActionBar();
-		actionBar.hide();
+		
 		this.onStart();
 		super.onCreate(savedInstanceState);
 
@@ -97,9 +103,9 @@ public class Hello_activity extends Activity {
 						public void onSuccess(User u, Token t) {
 							runOnUiThread(new Runnable() {
 								public void run() {
-									setContentView(R.layout.activity_login);
 									Intent intent = new Intent(getApplication(), Main.class);
 									startActivity(intent);
+									finish();
 								}
 							});
 						}
@@ -169,9 +175,20 @@ public class Hello_activity extends Activity {
 								RelativeLayout rl = (RelativeLayout) findViewById(R.id.firstsett_lout);
 								Animation pushrightout = AnimationUtils.loadAnimation(getApplicationContext(),
 										R.anim.push_left_out_true);
+								int childc = rl.getChildCount();
+								for (int i=0; i < childc; i++){
+								      View v = rl.getChildAt(i);
+								      v.startAnimation(pushrightout);
+								}
+								
+								final Handler handler = new Handler();
+								handler.postDelayed(new Runnable() {
+									
+									public void run() {
 
-								rl.startAnimation(pushrightout);
-								setContentView(R.layout.activity_login);
+										setContentView(R.layout.activity_login);
+									}
+								}, 500);
 							}
 						});
 
@@ -196,10 +213,21 @@ public class Hello_activity extends Activity {
 	public void weiter(View view) {
 		RelativeLayout rl = (RelativeLayout) findViewById(R.id.init_conf);
 		Animation pushrightout = AnimationUtils.loadAnimation(this,
-				R.anim.push_right_out);
+				R.anim.push_right_out);	
+		final Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			
+			public void run() {
 
-		rl.startAnimation(pushrightout);
-		setContentView(R.layout.activity_first_settings);
+				setContentView(R.layout.activity_first_settings);
+			}
+		}, 500);
+		int childc = rl.getChildCount();
+		for (int i=0; i < childc; i++){
+		      View v = rl.getChildAt(i);
+		      v.startAnimation(pushrightout);
+		}
+		
 		
 	}
 
@@ -238,6 +266,7 @@ public class Hello_activity extends Activity {
 							Intent intent = new Intent(getApplication(),
 									Main.class);
 							startActivity(intent);
+							finish();
 						} catch (Exception e) {
 							Log.d("HELLOACT", "XML WRITE ERR");
 						}
@@ -252,8 +281,21 @@ public class Hello_activity extends Activity {
 		Animation pushrightout = AnimationUtils.loadAnimation(this,
 				R.anim.push_right_out);
 
-		rl.startAnimation(pushrightout);
-		setContentView(R.layout.activity_first_settings);
+		final Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			
+			public void run() {
+
+				setContentView(R.layout.activity_first_settings);
+			}
+		}, 500);
+		
+		int childc = rl.getChildCount();
+		for (int i=0; i < childc; i++){
+		      View v = rl.getChildAt(i);
+		      v.startAnimation(pushrightout);
+		}
+		
 	}
 
 	@Override

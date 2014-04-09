@@ -1,7 +1,9 @@
 package com.example.cubemanagehome.utility;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +26,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 //import android.content.Context;
 import android.util.Log;
 
@@ -70,10 +74,10 @@ public class API {
 		this.context = context;
 	}
 
-	public Token getTk(){
+	public Token getTk() {
 		return this.token;
 	}
-	
+
 	/**
 	 * Binds the API to a new Host
 	 * 
@@ -177,7 +181,6 @@ public class API {
 		} catch (Exception e) {
 			this.user = null;
 			this.token = null;
-			Log.d("API", "Gayt it");
 			return false;
 		}
 	}
@@ -195,7 +198,6 @@ public class API {
 
 					JSONObject result = request(API_AUTH, HTTP_METHOD.GET,
 							null, t.getToken());
-					Log.d("API", result.toString());
 					user = new User(result);
 					token = t;
 					if (callback != null)
@@ -446,6 +448,24 @@ public class API {
 				errorCallback);
 	}
 
+	public void asyncImageRequest(final String api, final String identifier,
+			final APIImageCallback callback, final APIErrorCallback errorCallback) {
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					URL url = buildApiRequestURI(api, HTTP_METHOD.GET, identifier, null).toURL();
+					InputStream is = url.openConnection().getInputStream();
+					if(callback!=null)
+						callback.onResult(BitmapFactory.decodeStream(is));
+				} catch (Exception e) {
+					if(errorCallback!=null)
+						errorCallback.onError("");
+				}
+
+			}
+		}).start();
+	}
+
 	private void asyncRequest(final String api, final HTTP_METHOD method,
 			final Object args, final APIResponseCallback callback,
 			final APIErrorCallback errorCallback) {
@@ -555,6 +575,10 @@ public class API {
 
 	public interface APIResponseCallback {
 		public void onResult(JSONObject o);
+	}
+
+	public interface APIImageCallback {
+		public void onResult(Bitmap b);
 	}
 
 	public interface APIErrorCallback {

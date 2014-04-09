@@ -7,5 +7,8 @@
     <string name="title_activity_hello_activity">Hello_activity</string>
     <string name="title_activity_first_settings">FirstSettings</string>
     <string name="title_activity_test">Test</string>
+    <string name="title_activity_your_profile">YourProfile</string>
+    <string name="title_activity_avatar_setting">AvatarSetting</string>
+    <string name="title_activity_edit_user">EditUser</string>
 
 </resources>

@@ -12,12 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
-
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,8 +31,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -60,6 +62,11 @@ public class Main extends Activity {
 	API api = API.getApiInstance();
 	WebSocket ws = new WebSocket();
 	boolean options = false;
+	
+	public void ihrprofil(View view){
+		Intent intent = new Intent(getApplication(), YourProfile.class);
+		startActivity(intent);
+	}
 
 	public void options(View view) {
 
@@ -173,6 +180,8 @@ public class Main extends Activity {
 		File tkfile = PathManager.getAbsoluteFilePath(getApplicationContext(),
 				PathManager.FILE_TOKEN);
 		if (tkfile.delete()) {
+			Intent intent = new Intent(getApplication(), Hello_activity.class);
+			startActivity(intent);
 			finish();
 		} else {
 			final AlertDialog.Builder alert_lof = new AlertDialog.Builder(this)
@@ -211,12 +220,14 @@ public class Main extends Activity {
 		ActionBar actionBar = this.getActionBar();
 		actionBar.hide();
 		try {
-			this.start();
+			start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (WebSocketException e) {
 			Log.d("MAINACT", "FETT WS EXCEPTION");
 		}
+			
+		
 		super.onCreate(savedInstanceState);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -256,12 +267,9 @@ public class Main extends Activity {
 		ws.addMessageReceivedListener(new MessageReceivedEventListener() {
 			
 			public void onMessageReceived(MessageReceivedEvent e) {
-				
-				Log.d("CUBE", "Jo Fix, Header: " + e.getType());
 				String type = e.getType();
 
 				if (type.equals(WebSocket.WSS_RESPONSE_TOKEN_ACCEPT)) {
-					Log.d("CUBE", "Token Acceptet");
 					ws.send(WebSocket.WSS_REQUEST_ACTIVE);
 				}
 				else if(type.equals(WebSocket.WSS_RESPONSE_ACTIVE)){
@@ -276,7 +284,7 @@ public class Main extends Activity {
 					
 					for(int i = 0; i<jarr.length(); i++){	
 						try {
-							final JSONObject obj = jarr.getJSONObject(i);
+							final JSONObject obj = jarr.getJSONObject(i); //TODO checkifAlreadyinthere(JSONArray jarr, JSONObject obj)
 							if(obj.getInt("configured") > 0){
 								
 								new Thread(new Runnable(){
@@ -295,7 +303,8 @@ public class Main extends Activity {
 													.getApiRequest(
 															API.API_PLUGIN,
 															obj.getString("plugin"));
-											if(plugin.getString("id").equals("1000000011111111") || plugin.getString("id").equals("1000000022222222") || plugin.getString("id").equals("1000000033333333")){
+											
+											if(plugin.getString("objects").equals("motor") || plugin.getString("objects").equals("slider") || plugin.getString("objects").equals("led") || plugin.getString("objects").equals("number") || plugin.getString("objects").equals("toggle")){
 												runOnUiThread(new Runnable() {
 													 public void run() {
 														 addDevice(obj, location, plugin);
@@ -327,7 +336,35 @@ public class Main extends Activity {
 				else if(type.equals(WebSocket.WSS_RESPONSE_REMOVE)){
 					//TODO
 				}
+				else if(type.equals(WebSocket.WSS_RESPONSE_UPDATE)){}
+					//TODO
+				else if(type.equals(WebSocket.WSS_RESPONSE_ERROR_API)){
+					//TODO
+				}
+				else if(type.equals(WebSocket.WSS_RESPONSE_TOKEN_REFUSE)){
+					File tkfile = PathManager.getAbsoluteFilePath(getApplicationContext(),
+							PathManager.FILE_TOKEN);
+					if (tkfile.delete()) {
+						final AlertDialog.Builder alert_lof = new AlertDialog.Builder(getApplicationContext())
+						.setTitle("Session Expired")
+						.setMessage(
+								"The Server-User-Session Expired. Try to logging in again");
 
+						alert_lof.show();
+						
+						finish();
+					} else {
+						final AlertDialog.Builder alert_lof = new AlertDialog.Builder(getApplicationContext())
+								.setTitle("Logout failed")
+								.setMessage(
+										"A critical Error occured, try to restart your app");
+
+						alert_lof.show();
+
+					}
+				}
+				
+				
 			}
 		});
 
@@ -335,172 +372,7 @@ public class Main extends Activity {
 
 	}
 
-	// final String WSS_REQUEST_COUNT = "C!G:COUNT";
-	// final String WSS_REQUEST_ACTIVE = "C!G:ACTIVE";
-	// final String WSS_REQUEST_VALUE = "C!G:VALUE";
-	// // RESPONSES
-	// final String WSS_RESPONSE_ACTIVE = "W!R:ADD";
-	// final String WSS_RESPONSE_COUNT = "W!R:COUNT";
-	// final String WSS_RESPONSE_VALUE = "W!R:VALUE";
-	// final String WSS_RESPONSE_REMOVE = "W!R:REMOVE";
-	//
-	//
-	//
-	// final AlertDialog.Builder zerodevices = new AlertDialog.Builder(this)
-	// .setTitle("No Devices found")
-	// .setMessage(
-	// "At the moment no Devices are connected\nMaybe there is a problem on the Server");
-	// try {
-	// mConnection.connect(Utility.getURI(Utility.URI_WEBSOCKET, ip),
-	// new WebSocketHandler() {
-	//
-	// @Override
-	// public void onOpen() { // On open wird ausgeführt sobald
-	// // die
-	// // connection steht
-	//
-	//
-	// }
-	//
-	// @Override
-	// public void onTextMessage(String payload) { // soll
-	// // ausgeführt
-	// // werden sobald was
-	// // recieved wird
-	// Log.d("PAYLOAD", payload);
-	// int count=0;
-	//
-	// try {
-	// obj = new JSONObject(payload);
-	// String type = obj.getString("type");
-	// if (type.equals(WSS_RESPONSE_COUNT)) {
-	// JSONObject lol = obj.getJSONObject("data");
-	// count = lol.getInt("count");
-	// if (count > 0) {
-	// HashMap<String, Object> mp = new HashMap<String, Object>();
-	// mp.put("type", WSS_REQUEST_ACTIVE);
-	// JSONObject o = new JSONObject(mp);
-	// mConnection.sendTextMessage(o
-	// .toString());
-	// } else {
-	// zerodevices.show();
-	// }
-	//
-	// } else if (type.equals(WSS_RESPONSE_ACTIVE)) {
-	//
-	//
-	// // new Thread(new Runnable() {
-	// //
-	// // @Override
-	// // public void run() {
-	// // int index = 1;
-	// // boolean stop = false;
-	// // while(!stop){
-	// // String number = "" + index;
-	// // JSONObject objct;
-	// // try {
-	// //
-	// // objct = (JSONObject) API
-	// // .Request(
-	// // API.API_DEVICE,
-	// // Utility.getURI(
-	// // Utility.URI_HTTP,
-	// // ip_request),
-	// // number);
-	// //
-	// // int configured;
-	// // configured = objct
-	// // .getInt("configured");
-	// //
-	// // if (configured > 0) {
-	// // final String name = objct
-	// // .getString("name");
-	// //
-	// // final int id = objct.getInt("id");
-	// //
-	// // final JSONObject loc = objct.getJSONObject("location");
-	// // final JSONObject plug = objct.getJSONObject("plugin");
-	// //
-	// // final String locname = loc.getString("name");
-	// // final int locid = loc.getInt("id");
-	// //
-	// //
-	// // if(plug.getString("objects").equals("toggle")){
-	// // runOnUiThread(new Runnable() {
-	// // public void run() {
-	// // addlightButtons(id,
-	// // name, locname, locid);
-	// // }
-	// // });
-	// // }
-	// // else if(plug.getString("objects").equals("number")){
-	// // runOnUiThread(new Runnable() {
-	// // public void run() {
-	// // addTemperatureDisplay(id,
-	// // name, locname, locid);
-	// // changeTempValue(3, "21°");
-	// // }
-	// // });
-	// // }
-	// // else if(plug.getString("objects").equals("led")){
-	// // runOnUiThread(new Runnable() {
-	// // public void run() {
-	// // addLedDisplay(id,
-	// // name, locname, locid);
-	// // changeLedState(4, 1);
-	// // }
-	// // });
-	// // }
-	// //
-	// // }
-	// // } catch (Exception e) {
-	// // stop = true;
-	// // }
-	// // index++;
-	// // }
-	// // }
-	// // }).start();
-	//
-	// }
-	//
-	//
-	// }
-	//
-	// catch (Exception e) {
-	// Log.d(TAG, e.getMessage());
-	// }
-	//
-	// }
-	//
-	// @Override
-	// public void onClose(int code, String reason) {
-	// connectionlost.show();
-	// }
-	//
-	// // @Override
-	// // public void onOpen() {
-	// // Log.d(TAG, "Status: Connected to " + wsuri);
-	// // mConnection.sendTextMessage("Hello, world!");
-	// // }
-	// //
-	// // @Override
-	// // public void onTextMessage(String payload) {
-	// // Log.d(TAG, "Got echo: " + payload);
-	// // }
-	// //
-	// // @Override
-	// // public void onClose(int code, String reason) {
-	// // Log.d(TAG, "Connection lost.");
-	// // }
-	// });
-	// } catch (Exception e) {
-	//
-	// Log.d(TAG, e.toString());
-	// }
-	//
-	// }
-
-	public void deleteDevice(int id, int locid) {
+	public void deleteDevice(int id, int locid) { //TODO Check, change Arguments
 		final TableRow tr2 = (TableRow) findViewById(id + 12000);
 		final TableRow tr = (TableRow) findViewById(id + 9000);
 		final int idloc = locid;
@@ -511,11 +383,11 @@ public class Main extends Activity {
 		tr2.startAnimation(pushdownin);
 
 		tr.removeAllViewsInLayout();
-		tr2.removeAllViewsInLayout();
+		tr2.removeAllViewsInLayout();						
 
 		final Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
-			@Override
+			
 			public void run() {
 
 				TableLayout ll = (TableLayout) findViewById(idloc + 15000);
@@ -531,8 +403,6 @@ public class Main extends Activity {
 
 	}
 
-	
-	@SuppressLint("NewApi")
 	void addDevice(JSONObject dev, JSONObject loc, JSONObject plugin){
 		final JSONObject device = dev;
 		TableLayout ll = (TableLayout) findViewById(R.id.lout_main_table);
@@ -540,10 +410,8 @@ public class Main extends Activity {
 		TableRow tr3 = new TableRow(this);
 		int width = 0;
 		int height = 0;
-		TextView name = new TextView(this);
-		TextView tv = new TextView(this);
-		ImageView img = new ImageView(this);
 		LinearLayout tr_h = new LinearLayout(this);
+		
 		String bez = null;
 		int locid = 0;
 		int id = 0;
@@ -557,18 +425,20 @@ public class Main extends Activity {
 		} catch (JSONException e) {
 			Log.d("DEV", "Exception 1");
 		}
-		
 		final int idcpy = id;
 		final int locidcpy = locid;
 		
 		try {
-			if(plugin.getString("id").equals("1000000011111111")){
+			if(plugin.getString("objects").equals("toggle") || plugin.getString("objects").equals("motor")){
 				
 				Button onButton = new Button(this);
 				
+				if(plugin.getString("objects").equals("toggle"))
 				onButton.setText("ON");
+				else
+				onButton.setText("+");
+				
 				onButton.setBackgroundColor(Color.parseColor("#F52200"));
-				onButton.setId(id + 10000);
 
 				onButton.setOnClickListener(new OnClickListener() {
 
@@ -580,17 +450,20 @@ public class Main extends Activity {
 						data.put("id", idstr);
 						data.put("value", "1");
 
-						ws.send(WebSocket.WSS_REQUEST_VALUE, data);
+						ws.send(WebSocket.WSS_EXECUTE_CLIENT_COMMAND, data);
 
 					}
 				});
 				
 				
 				Button offButton = new Button(this);
+				
+				if(plugin.getString("objects").equals("toggle"))
 				offButton.setText("OFF");
+				else
+				offButton.setText("-");
+				
 				offButton.setBackgroundColor(Color.LTGRAY);
-				offButton.setId(id + 11000);
-
 				offButton.setOnClickListener(new OnClickListener() {
 
 					String idstr = "" + idcpy;
@@ -601,7 +474,7 @@ public class Main extends Activity {
 						data.put("id", idstr);
 						data.put("value", "0");
 
-						ws.send(WebSocket.WSS_REQUEST_VALUE, data);
+						ws.send(WebSocket.WSS_EXECUTE_CLIENT_COMMAND, data);
 
 					}
 				});
@@ -612,7 +485,8 @@ public class Main extends Activity {
 				tr_h.addView(offButton);
 				
 			}
-			else if(plugin.getString("id").equals("1000000022222222")){
+			else if(plugin.getString("objects").equals("number")){
+				TextView tv = new TextView(this);
 				tv.setText(dev.getInt("value") + "°");
 				tv.setId(idcpy + 17000);
 				tv.setTextSize(60);
@@ -624,8 +498,35 @@ public class Main extends Activity {
 				tr_h.addView(tv);
 				
 			}
-			else if(plugin.getString("id").equals("1000000033333333")){
-				
+			else if(plugin.getString("objects").equals("slider")){
+				SeekBar sb = new SeekBar(this);
+				sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+					HashMap<String, Object> data = new HashMap<String, Object>();
+					public void onStopTrackingTouch(SeekBar arg0) {
+						ws.send(WebSocket.WSS_EXECUTE_CLIENT_COMMAND, data);
+					}
+					
+					public void onStartTrackingTouch(SeekBar arg0) {
+						//DoNothing
+					}
+					
+					public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+						String idstr = "" + idcpy;
+						
+						data.put("id", idstr);
+						data.put("value", "" + arg1);
+
+						
+					}
+				});
+				LayoutParams lp = new LayoutParams(ll.getWidth()/2, LayoutParams.WRAP_CONTENT);
+			    sb.setLayoutParams(lp);
+				tr_h.setMinimumWidth(LayoutParams.WRAP_CONTENT);
+				tr_h.setMinimumHeight(LayoutParams.WRAP_CONTENT);
+				tr_h.addView(sb);
+			}
+			else if(plugin.getString("objects").equals("led")){
+				ImageView img = new ImageView(this);
 				if(dev.getString("value").equals("" + 0)){
 				img.setBackgroundResource(R.drawable.kreis_schwarz);
 				}else{img.setBackgroundResource(R.drawable.kreis_orange);}
@@ -633,7 +534,6 @@ public class Main extends Activity {
 				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 						130, 130);
 				img.setLayoutParams(layoutParams);
-				
 				
 				tr_h.setMinimumWidth(LayoutParams.WRAP_CONTENT);
 				tr_h.setMinimumHeight(LayoutParams.WRAP_CONTENT);
@@ -644,11 +544,22 @@ public class Main extends Activity {
 		} catch (JSONException e) {
 			Log.d("DEV", "Exception 2");
 		}
+		TextView name = new TextView(this);
+		name.setText(bez);
 		
-		name.setText(bez + " " + id);
-
+		TextView idtxt = new TextView(this);
+		idtxt.setText("ID: " + id);
+		idtxt.setGravity(Gravity.RIGHT);
+		name.setGravity(Gravity.LEFT);
+		
+		
+		LinearLayout lin_desc = new LinearLayout(this);
+		
+		lin_desc.addView(name);
+		lin_desc.addView(idtxt);
+		
 		TableRow tr = new TableRow(this);
-		tr.setBackgroundColor(Color.rgb(220, 220, 220));
+		tr.setBackgroundColor(Color.argb(150, 220, 220, 220));
 		tr.setMinimumWidth(LayoutParams.MATCH_PARENT);
 		tr.setMinimumHeight(LayoutParams.WRAP_CONTENT);
 		tr.setId(id + 9000);
@@ -799,7 +710,6 @@ public class Main extends Activity {
 			
 			tr3.setMinimumWidth(LayoutParams.WRAP_CONTENT);
 			tr3.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-			tr3.setId(locid + 16000);
 			
 			
 			TextView locname = new TextView(this);
@@ -903,12 +813,16 @@ public class Main extends Activity {
 			
 			int w = ll.getWidth()/2 - ll.getWidth()/8 - locname.getMeasuredWidth()/2;
 			
-			if(ll.getChildCount() == 0)
+			if(ll.getChildCount() == 0){
 			tr3.setPadding(w, 5, 0, 40);
+			ProgressBar bar = (ProgressBar) findViewById(R.id.yologressbar);
+			bar.setVisibility(8);}
 			else
 			tr3.setPadding(w, 100, 0, 40);
 			
 			tl.addView(tr3);
+			
+			
 			ll.addView(tl);
 		} else {
 			tl = (TableLayout) findViewById(locid + 15000);
@@ -921,8 +835,11 @@ public class Main extends Activity {
 		tr2.setPadding(0, 40, 0, 0);
 		tr2.setId(id + 12000);
 
-		tr2.addView(name);
+		
+		tr2.addView(lin_desc);
 
+		
+		
 		Animation pushdownin = AnimationUtils.loadAnimation(this,
 				R.anim.push_left_in);
 		tr.startAnimation(pushdownin);
@@ -933,416 +850,17 @@ public class Main extends Activity {
 		tl.addView(tr);
 
 		tr_h.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+		tr2.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+		
+		
 		width = (ll.getWidth()/2) - (tr_h.getMeasuredWidth()/2) - (ll.getWidth()/8);
 		height = (int) (ll.getWidth()/2.4) - (tr_h.getMeasuredHeight());
 		tr.setPadding(width, height, 0, height);
 		
+		int idw = ll.getWidth() - ll.getWidth()/4 - tr2.getMeasuredWidth();
+		idtxt.setPadding(idw, 0, 0, 0);
+	
 	}
-
-//	void addlightButtons(int id, String bez, String location, int locid) {
-//		final int idcpy = id;
-//		final int locidcpy = locid;
-//		TableLayout ll = (TableLayout) findViewById(R.id.lout_main_table);
-//		TableLayout tl;
-//
-//		Button onButton = new Button(this);
-//		TextView name = new TextView(this);
-//		onButton.setText("ON");
-//		onButton.setBackgroundColor(Color.argb(255, 255, 102, 0));
-//		onButton.setId(id + 10000);
-//
-//		onButton.setOnClickListener(new OnClickListener() {
-//
-//			String idstr = "" + idcpy;
-//
-//			public void onClick(View v) {
-//
-//				HashMap<String, Object> hm = new HashMap<String, Object>();
-//				hm.put("type", "C!G:VALUE");
-//
-//				HashMap<String, String> data = new HashMap<String, String>();
-//				data.put("id", idstr);
-//				data.put("value", "1");
-//				JSONObject obje = new JSONObject(data);
-//
-//				hm.put("data", obje);
-//				JSONObject obj = new JSONObject(hm);
-//
-//			
-//
-//				Log.d("CUBE", obj.toString());
-//			}
-//		});
-//		Button offButton = new Button(this);
-//		offButton.setText("OFF");
-//		offButton.setBackgroundColor(Color.LTGRAY);
-//		offButton.setId(id + 11000);
-//
-//		offButton.setOnClickListener(new OnClickListener() {
-//
-//			String idstr = "" + idcpy;
-//
-//			@Override
-//			public void onClick(View v) {
-//
-//				HashMap<String, Object> hm = new HashMap<String, Object>();
-//				hm.put("type", "C!G:VALUE");
-//
-//				HashMap<String, String> data = new HashMap<String, String>();
-//				data.put("id", idstr);
-//				data.put("value", "0");
-//				JSONObject obje = new JSONObject(data);
-//
-//				hm.put("data", obje);
-//				JSONObject obj = new JSONObject(hm);
-//
-//				
-//
-//				Log.d("CUBEEEE", obj.toString());
-//
-//			}
-//		});
-//
-//		final AlertDialog.Builder deviceinfo = new AlertDialog.Builder(this);
-//
-//		name.setText(bez + " " + id);
-//
-//		TableRow tr = new TableRow(this);
-//		tr.setPadding(100, 100, 100, 100);
-//		tr.setBackgroundColor(Color.rgb(220, 220, 220));
-//		tr.setMinimumWidth(LayoutParams.MATCH_PARENT);
-//		tr.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr.setId(id + 9000);
-//		tr.setClickable(true);
-//		tr.setOnClickListener(new OnClickListener() {
-//
-//			public void onClick(View arg0) {
-//
-//				new Thread(new Runnable() {
-//					JSONObject objct;
-//
-//					@Override
-//					public void run() {
-//
-//						String number = "" + idcpy;
-//
-//						try {
-//
-//							api.asyncGetApiRequest(API.API_DEVICE, number,
-//									new APIResponseCallback() {
-//
-//										@Override
-//										public void onResult(JSONObject o) {
-//											objct = o;
-//
-//										}
-//									}, null);
-//
-//							int configured;
-//							configured = objct.getInt("configured");
-//
-//							if (configured > 0) {
-//								final String name = objct.getString("name");
-//
-//								final int id = objct.getInt("id");
-//
-//								final String cat = objct
-//										.getString("created_at");
-//
-//								final String description = objct
-//										.getString("description");
-//
-//								runOnUiThread(new Runnable() {
-//									public void run() {
-//										deviceinfo
-//												.setTitle(name + " " + id)
-//												.setMessage(
-//														"Name: "
-//																+ name
-//																+ "\nID: "
-//																+ id
-//																+ "\nCreated At: "
-//																+ cat
-//																+ "\nDescription: "
-//																+ description);
-//										deviceinfo.show();
-//									}
-//								});
-//
-//							}
-//						} catch (Exception e) {
-//							Log.d(TAG, "geht nix");
-//						}
-//
-//					}
-//				}).start();
-//
-//			}
-//
-//		});
-//
-//		if (findViewById(locid + 15000) == null) {
-//			tl = new TableLayout(this);
-//			tl.setId(locid + 15000);
-//
-//			TableRow tr3 = new TableRow(this);
-//			tr3.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//			tr3.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//			tr3.setPadding(0, 40, 0, 40);
-//			tr3.setId(locid + 16000);
-//
-//			TextView locname = new TextView(this);
-//			locname.setText(location);
-//
-//			TableLayout tab = (TableLayout) findViewById(R.id.settings);
-//			TextView locnav = new TextView(this);
-//			locnav.setText("\t- " + location);
-//			TableRow tabr = new TableRow(this);
-//			tabr.setPadding(0, 2, 0, 2);
-//
-//			
-//			tabr.addView(locnav);
-//			Animation pushdownin = AnimationUtils.loadAnimation(this, R.anim.push_right_in);
-//			tabr.startAnimation(pushdownin);
-//			tab.addView(tabr);
-//
-//			tabr.setOnClickListener(new OnClickListener() {
-//				
-//				public void onClick(View v) {
-//					TableLayout tab1 =  (TableLayout) findViewById(R.id.lout_main_table);
-//					TableLayout tab2 =  (TableLayout) findViewById(R.id.settings);
-//					
-//					Animation pushrightout = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_left_in);
-//					tab1.setVisibility(0);
-//					tab1.startAnimation(pushrightout);
-//					
-//					
-//					Animation pushrightin = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_left_out);
-//					tab2.startAnimation(pushrightin);
-//					tab2.setVisibility(8);
-//					options = false;
-//
-//					
-//					final Handler handler = new Handler();
-//				    handler.postDelayed(new Runnable() {
-//				    	public void run() {
-//			            	ScrollView sv = (ScrollView) findViewById(R.id.scrollView1);
-//							TableLayout tl = (TableLayout) findViewById(locidcpy + 15000);
-//							int y = (int) tl.getY();
-//							sv.scrollTo(0, y);
-//			            }
-//			        }, 100);
-//				}
-//			});
-//			
-//			tr3.addView(locname);
-//
-//			tl.addView(tr3);
-//			ll.addView(tl);
-//		} else {
-//			tl = (TableLayout) findViewById(locid + 15000);
-//
-//		}
-//
-//		LinearLayout tr_h = new LinearLayout(this);
-//		tr_h.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//		tr_h.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr_h.addView(onButton);
-//		tr_h.addView(offButton);
-//
-//		TableRow tr2 = new TableRow(this);
-//		tr2.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//		tr2.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr2.setPadding(0, 40, 0, 0);
-//		tr2.setId(id + 12000);
-//
-//		tr2.addView(name);
-//
-//		Animation pushdownin = AnimationUtils.loadAnimation(this,
-//				R.anim.push_left_in);
-//		tr.startAnimation(pushdownin);
-//		tr2.startAnimation(pushdownin);
-//
-//		tr.addView(tr_h);
-//		tl.addView(tr2);
-//		tl.addView(tr);
-//
-//	}
-
-//	@SuppressLint("NewApi")
-//	void addTemperatureDisplay(int id, String bez, String location, int locid) {
-//		final int locidcpy = locid;
-//		final int idcpy = id;
-//		int idlol = id + 17000;
-//		TableLayout ll = (TableLayout) findViewById(R.id.lout_main_table);
-//		TableLayout tl;
-//		TextView tv = new TextView(this);
-//		tv.setText("No value set!");
-//		tv.setId(idlol);
-//		tv.setTextSize(20);
-//
-//		//SWAG
-//		
-//		TextView name = new TextView(this);
-//
-//		final AlertDialog.Builder deviceinfo = new AlertDialog.Builder(this);
-//
-//		name.setText(bez + " " + id);
-//
-//		TableRow tr = new TableRow(this);
-//		tr.setPadding(100, 100, 100, 100);
-//		tr.setBackgroundColor(Color.rgb(220, 220, 220));
-//		tr.setMinimumWidth(LayoutParams.MATCH_PARENT);
-//		tr.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr.setId(id + 9000);
-//		tr.setClickable(true);
-//		tr.setOnClickListener(new OnClickListener() {
-//
-//			public void onClick(View arg0) {
-//
-//				new Thread(new Runnable() {
-//					JSONObject objct;
-//
-//					@Override
-//					public void run() {
-//
-//						String number = "" + idcpy;
-//
-//						try {
-//
-//							api.asyncGetApiRequest(API.API_DEVICE, number,
-//									new APIResponseCallback() {
-//
-//										@Override
-//										public void onResult(JSONObject o) {
-//											objct = o;
-//
-//										}
-//									}, null);
-//
-//							int configured;
-//							configured = objct.getInt("configured");
-//
-//							if (configured > 0) {
-//								final String name = objct.getString("name");
-//
-//								final int id = objct.getInt("id");
-//
-//								final String cat = objct
-//										.getString("created_at");
-//
-//								final String description = objct
-//										.getString("description");
-//
-//								runOnUiThread(new Runnable() {
-//									public void run() {
-//										deviceinfo
-//												.setTitle(name + " " + id)
-//												.setMessage(
-//														"Name: "
-//																+ name
-//																+ "\nID: "
-//																+ id
-//																+ "\nCreated At: "
-//																+ cat
-//																+ "\nDescription: "
-//																+ description);
-//										deviceinfo.show();
-//									}
-//								});
-//
-//							}
-//						} catch (Exception e) {
-//							Log.d(TAG, "geht nix");
-//						}
-//
-//					}
-//				}).start();
-//
-//			}
-//
-//		});
-//
-//		if (findViewById(locid + 15000) == null) {
-//			tl = new TableLayout(this);
-//			tl.setId(locid + 15000);
-//
-//			TableRow tr3 = new TableRow(this);
-//			tr3.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//			tr3.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//			tr3.setPadding(0, 40, 0, 40);
-//			tr3.setId(locid + 16000);
-//
-//			TextView locname = new TextView(this);
-//			locname.setText(location);
-//
-//			TableLayout tab = (TableLayout) findViewById(R.id.settings);
-//			TextView locnav = new TextView(this);
-//			locnav.setText("\t- " + location);
-//			TableRow tabr = new TableRow(this);
-//			tabr.setPadding(0, 2, 0, 2);
-//
-//			tabr.addView(locnav);
-//			
-//			tabr.setOnClickListener(new OnClickListener() {
-//				
-//				public void onClick(View v) {
-//					TableLayout tab1 =  (TableLayout) findViewById(R.id.lout_main_table);
-//					TableLayout tab2 =  (TableLayout) findViewById(R.id.settings);
-//					
-//					Animation pushrightout = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_left_in);
-//					tab1.setVisibility(0);
-//					tab1.startAnimation(pushrightout);
-//					
-//					
-//					Animation pushrightin = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_left_out);
-//					tab2.startAnimation(pushrightin);
-//					tab2.setVisibility(8);
-//					options = false;
-//
-//					
-//					final Handler handler = new Handler();
-//				    handler.postDelayed(new Runnable() {
-//				    	public void run() {
-//			            	ScrollView sv = (ScrollView) findViewById(R.id.scrollView1);
-//							TableLayout tl = (TableLayout) findViewById(locidcpy + 15000);
-//							int y = (int) tl.getY();
-//							sv.scrollTo(0, y);
-//			            }
-//			        }, 100);
-//				}
-//			});
-//			Animation pushdownin = AnimationUtils.loadAnimation(this, R.anim.push_right_in);
-//			tabr.startAnimation(pushdownin);
-//			tab.addView(tabr);
-//
-//			tr3.addView(locname);
-//
-//			tl.addView(tr3);
-//			ll.addView(tl);
-//		} else {
-//			tl = (TableLayout) findViewById(locid + 15000);
-//		}
-//
-//		tr.addView(tv);
-//
-//		TableRow tr2 = new TableRow(this);
-//		tr2.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//		tr2.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr2.setPadding(0, 40, 0, 0);
-//		tr2.setId(id + 12000);
-//
-//		tr2.addView(name);
-//
-//		Animation pushdownin = AnimationUtils.loadAnimation(this,
-//				R.anim.push_left_in);
-//		tr.startAnimation(pushdownin);
-//		tr2.startAnimation(pushdownin);
-//
-//		tl.addView(tr2);
-//		tl.addView(tr);
-//
-//	}
 
 	void changeTempValue(int id, String value) {
 
@@ -1351,184 +869,6 @@ public class Main extends Activity {
 		temp.setTextSize(50);
 
 	}
-
-//	void addLedDisplay(int id, String bez, String location, int locid) {
-//		final int locidcpy = locid;
-//		final int idcpy = id;
-//		TableLayout ll = (TableLayout) findViewById(R.id.lout_main_table);
-//		TableLayout tl;
-//
-//		ImageView img = new ImageView(this);
-//		img.setBackgroundResource(R.drawable.kreis_schwarz);
-//		img.setId(idcpy + 18000);
-//		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-//				100, 100);
-//		img.setLayoutParams(layoutParams);
-//
-//		TextView name = new TextView(this);
-//
-//		final AlertDialog.Builder deviceinfo = new AlertDialog.Builder(this);
-//
-//		name.setText(bez + " " + id);
-//
-//		TableRow tr = new TableRow(this);
-//		tr.setPadding(100, 100, 100, 100);
-//		tr.setBackgroundColor(Color.rgb(220, 220, 220));
-//		tr.setMinimumWidth(LayoutParams.MATCH_PARENT);
-//		tr.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr.setId(id + 9000);
-//		tr.setClickable(true);
-//		tr.setOnClickListener(new OnClickListener() {
-//
-//			public void onClick(View arg0) {
-//
-//				new Thread(new Runnable() {
-//					JSONObject objct;
-//
-//					@Override
-//					public void run() {
-//
-//						String number = "" + idcpy;
-//
-//						try {
-//
-//							api.asyncGetApiRequest(API.API_DEVICE, number,
-//									new APIResponseCallback() {
-//
-//										@Override
-//										public void onResult(JSONObject o) {
-//											objct = o;
-//
-//										}
-//									}, null);
-//
-//							int configured;
-//							configured = objct.getInt("configured");
-//
-//							if (configured > 0) {
-//								final String name = objct.getString("name");
-//
-//								final int id = objct.getInt("id");
-//
-//								final String cat = objct
-//										.getString("created_at");
-//
-//								final String description = objct
-//										.getString("description");
-//
-//								runOnUiThread(new Runnable() {
-//									public void run() {
-//										deviceinfo
-//												.setTitle(name + " " + id)
-//												.setMessage(
-//														"Name: "
-//																+ name
-//																+ "\nID: "
-//																+ id
-//																+ "\nCreated At: "
-//																+ cat
-//																+ "\nDescription: "
-//																+ description);
-//										deviceinfo.show();
-//									}
-//								});
-//
-//							}
-//						} catch (Exception e) {
-//							Log.d(TAG, "geht nix");
-//						}
-//
-//					}
-//				}).start();
-//
-//			}
-//
-//		});
-//
-//		if (findViewById(locid + 15000) == null) {
-//			tl = new TableLayout(this);
-//			tl.setId(locid + 15000);
-//
-//			TableRow tr3 = new TableRow(this);
-//			tr3.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//			tr3.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//			tr3.setPadding(0, 40, 0, 40);
-//			tr3.setId(locid + 16000);
-//
-//			TextView locname = new TextView(this);
-//			locname.setText(location);
-//
-//			TableLayout tab = (TableLayout) findViewById(R.id.settings);
-//			TextView locnav = new TextView(this);
-//			locnav.setText("\t- " + location);
-//			TableRow tabr = new TableRow(this);
-//			tabr.setPadding(0, 2, 0, 2);
-//
-//			tabr.addView(locnav);
-//			
-//			tabr.setOnClickListener(new OnClickListener() {
-//				
-//				public void onClick(View v) {
-//					TableLayout tab1 =  (TableLayout) findViewById(R.id.lout_main_table);
-//					TableLayout tab2 =  (TableLayout) findViewById(R.id.settings);
-//					
-//					Animation pushrightout = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_left_in);
-//					tab1.setVisibility(0);
-//					tab1.startAnimation(pushrightout);
-//					
-//					
-//					Animation pushrightin = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.push_left_out);
-//					tab2.startAnimation(pushrightin);
-//					tab2.setVisibility(8);
-//					options = false;
-//
-//					
-//					final Handler handler = new Handler();
-//				    handler.postDelayed(new Runnable() {
-//				    	public void run() {
-//			            	ScrollView sv = (ScrollView) findViewById(R.id.scrollView1);
-//							TableLayout tl = (TableLayout) findViewById(locidcpy + 15000);
-//							int y = (int) tl.getY();
-//							sv.scrollTo(0, y);
-//			            }
-//			        }, 100);
-//				}
-//			});
-//			Animation pushdownin = AnimationUtils.loadAnimation(this, R.anim.push_right_in);
-//			tabr.startAnimation(pushdownin);
-//			tab.addView(tabr);
-//
-//			tr3.addView(locname);
-//
-//			tl.addView(tr3);
-//			ll.addView(tl);
-//		} else {
-//			tl = (TableLayout) findViewById(locid + 15000);
-//		}
-//
-//		LinearLayout tr_h = new LinearLayout(this);
-//		tr_h.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//		tr_h.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr_h.addView(img);
-//
-//		TableRow tr2 = new TableRow(this);
-//		tr2.setMinimumWidth(LayoutParams.WRAP_CONTENT);
-//		tr2.setMinimumHeight(LayoutParams.WRAP_CONTENT);
-//		tr2.setPadding(0, 40, 0, 0);
-//		tr2.setId(id + 12000);
-//
-//		tr.addView(tr_h);
-//		tr2.addView(name);
-//
-//		Animation pushdownin = AnimationUtils.loadAnimation(this,
-//				R.anim.push_left_in);
-//		tr.startAnimation(pushdownin);
-//		tr2.startAnimation(pushdownin);
-//
-//		tl.addView(tr2);
-//		tl.addView(tr);
-//
-//	}
 
 	void changeLedState(int id, int value) {
 
